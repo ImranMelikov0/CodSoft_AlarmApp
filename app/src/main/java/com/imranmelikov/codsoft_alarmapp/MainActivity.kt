@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.widget.TimePicker
@@ -17,6 +18,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var alarmTimePicker: TimePicker
     private var pendingIntent: PendingIntent? = null
     private lateinit var alarmManager: AlarmManager
+    private lateinit var toggleButton: ToggleButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,11 +26,14 @@ class MainActivity : AppCompatActivity() {
 
         alarmTimePicker = findViewById(R.id.timePicker)
         alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
+        toggleButton=findViewById(R.id.toggleButton)
+
     }
 
     @SuppressLint("ScheduleExactAlarm")
     fun onToggleClicked(view: View) {
         if ((view as ToggleButton).isChecked) {
+            toggleButton.setBackgroundColor(Color.GREEN)
             Toast.makeText(this@MainActivity, "ALARM ON", Toast.LENGTH_SHORT).show()
             val calendar = Calendar.getInstance()
 
@@ -48,6 +53,7 @@ class MainActivity : AppCompatActivity() {
             alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent!!)
         } else {
             pendingIntent?.let { alarmManager.cancel(it) }
+            toggleButton.setBackgroundColor(Color.parseColor("#FF9800"))
             Toast.makeText(this@MainActivity, "ALARM OFF", Toast.LENGTH_SHORT).show()
         }
     }
